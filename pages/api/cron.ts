@@ -47,5 +47,5 @@ export default async function handler(
     );
   });
 
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({})
 }
