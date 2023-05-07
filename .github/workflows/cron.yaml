@@ -1,0 +1,17 @@
+name: cron
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - name: Fetch 
+        run: |
+          curl https://port-0-red-news-3nec02mlh3icx7w.sel4.cloudtype.app/api/cron
