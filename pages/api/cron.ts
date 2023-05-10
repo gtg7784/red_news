@@ -33,7 +33,7 @@ export default async function handler(
     }
 
     for(const article of feed.items.slice(0, last_article_index)) {
-      const messege = `**[${press}]** ${article.title}\n${article.link}`;
+      const messege = `[${press}] ${article.title}\n${article.link}`;
 
       send_messege(
         chat_id,
