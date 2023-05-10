@@ -8,9 +8,9 @@ export default async function handler(
   res: NextApiResponse<unknown>
 ) {
   const rss_list = [
-    'https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml',
-    'https://rss.donga.com/total.xml',
-    'https://rss.hankyung.com/feed/headline.xml'
+    'https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml', // 조선일보
+    'https://rss.donga.com/total.xml', // 동아일보
+    'https://rss.hankyung.com/feed/headline.xml', // 한국경제
   ];
 
   rss_list.forEach(async (rss_url) => {
@@ -39,7 +39,7 @@ export default async function handler(
     await redis.set(last_articel_link_key, last_article_link);
 
     const chat_id = process.env.TELEGRAM_CHAT_ID as string;
-    const messege = `[${press}] ${last_article}\n${last_article_link}`;
+    const messege = `**[${press}]** ${last_article}\n${last_article_link}`;
 
     send_messege(
       chat_id,
