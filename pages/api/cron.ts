@@ -16,10 +16,9 @@ export default async function handler(
   rss_list.forEach(async (rss_url) => {
     const parser = new RssParser();
     const feed = await parser.parseURL(rss_url);
+    const chat_id = process.env.TELEGRAM_CHAT_ID as string;
 
     const press = feed.title;
-    const last_article = feed.items[0].title;
-    const last_article_link = feed.items[0].link;
 
     const last_article_key = `${press}_last_article_title`;
     const last_articel_link_key = `${press}_last_article_link`;
@@ -27,24 +26,26 @@ export default async function handler(
     const last_article_in_redis = await redis.get(last_article_key);
     const last_article_link_in_redis = await redis.get(last_articel_link_key);
 
-    const is_duplicated = 
-      last_article_in_redis === last_article ||
-      last_article_link_in_redis === last_article_link;
+    const last_article_index = feed.items.findIndex((item) => item.title === last_article_in_redis);
 
-    if (is_duplicated) {
+    if (last_article_index === 0) {
       return;
     }
 
+    for(const article of feed.items.slice(0, last_article_index)) {
+      const messege = `**[${press}]** ${article.title}\n${article.link}`;
+
+      send_messege(
+        chat_id,
+        messege
+      );
+    }
+
+    const last_article = feed.items[0].title;
+    const last_article_link = feed.items[0].link;
+
     await redis.set(last_article_key, last_article);
     await redis.set(last_articel_link_key, last_article_link);
-
-    const chat_id = process.env.TELEGRAM_CHAT_ID as string;
-    const messege = `**[${press}]** ${last_article}\n${last_article_link}`;
-
-    send_messege(
-      chat_id,
-      messege
-    );
   });
 
   res.status(200).json({})
