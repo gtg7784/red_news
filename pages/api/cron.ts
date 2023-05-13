@@ -8,8 +8,12 @@ export default async function handler(
   res: NextApiResponse<unknown>
 ) {
   const rss_list = [
-    'https://www.chosun.com/arc/outboundfeeds/rss/?outputType=xml', // 조선일보
-    'https://rss.donga.com/total.xml', // 동아일보
+    'https://www.chosun.com/arc/outboundfeeds/rss/category/politics/?outputType=xml', // 조선일보 정치
+    'https://www.chosun.com/arc/outboundfeeds/rss/category/economy/?outputType=xml', // 조선일보 경제
+    'https://www.chosun.com/arc/outboundfeeds/rss/category/national/?outputType=xml', // 조선일보 사회
+    'https://rss.donga.com/politics.xml', // 동아일보 정치
+    'https://rss.donga.com/national.xml', // 동아일보 사회
+    'https://rss.donga.com/economy.xml', // 동아일보 경제
     'https://rss.hankyung.com/feed/headline.xml', // 한국경제
   ];
 
